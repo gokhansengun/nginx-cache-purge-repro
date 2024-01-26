@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  proxy:
+    build:
+      context: proxy
+      dockerfile: Dockerfile
+    volumes:
+      - ./proxy/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - cache_volume:/cache
+    ports:
+      - 80:8080
+
+  test-backend-app:
+    build:
+      context: test-backend-app
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+
+volumes:
+  cache_volume:
